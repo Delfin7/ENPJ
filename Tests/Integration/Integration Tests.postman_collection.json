@@ -1,0 +1,1194 @@
+{
+	"info": {
+		"_postman_id": "10115500-f80a-4049-b306-069e3f858028",
+		"name": "Integration Tests",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Exam",
+			"item": [
+				{
+					"name": "Login",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"const cookieJar = pm.cookies.jar();\r",
+									"cookieJar.get(pm.environment.get(\"URL\"), \"csrftoken\", (error, cookie)=> {\r",
+									"        if(error) console.log(error);\r",
+									"        else pm.collectionVariables.set(\"token\", cookie);})"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {
+							"user-agent": true,
+							"accept": true,
+							"accept-encoding": true,
+							"connection": true
+						}
+					},
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "X-CSRFToken",
+								"value": "{{token}}",
+								"type": "default"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "login",
+									"value": "{{login}}",
+									"type": "default"
+								},
+								{
+									"key": "password",
+									"value": "{{password}}",
+									"type": "default"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{URL}}login/",
+							"host": [
+								"{{URL}}login"
+							],
+							"path": [
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Cancel exam",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "X-CSRFToken",
+								"value": "{{token}}",
+								"type": "default"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "cancel",
+									"value": "True",
+									"type": "default"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{URL}}cancel-exam",
+							"host": [
+								"{{URL}}cancel-exam"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Check active exams",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Active exam doesn't exists\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData.info).to.eql(false);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{URL}}check-active-exams",
+							"host": [
+								"{{URL}}check-active-exams"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Generate exam",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "X-CSRFToken",
+								"value": "{{token}}",
+								"type": "default"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "category",
+									"value": "B",
+									"type": "default"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{URL}}generate-exam",
+							"host": [
+								"{{URL}}generate-exam"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get exam id",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Info is integer\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData.info).to.be.a(\"number\");\r",
+									"    pm.collectionVariables.set(\"exam\", jsonData.info);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{URL}}check-active-exams",
+							"host": [
+								"{{URL}}check-active-exams"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get question",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Check body\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData.question_number).to.eql(1);\r",
+									"    pm.expect(jsonData.primary_number).to.eql(1);\r",
+									"    pm.expect(jsonData.spec_number).to.eql(0);\r",
+									"    pm.expect(jsonData.answer_a).to.eql(\"\");\r",
+									"    pm.expect(jsonData.answer_b).to.eql(\"\");\r",
+									"    pm.expect(jsonData.answer_c).to.eql(\"\");\r",
+									"\r",
+									"    pm.collectionVariables.set(\"id_question\", jsonData.id_question);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{URL}}exam-get",
+							"host": [
+								"{{URL}}exam-get"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Next question",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "X-CSRFToken",
+								"value": "{{token}}",
+								"type": "default"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "answer",
+									"value": "T",
+									"type": "default"
+								},
+								{
+									"key": "examId",
+									"value": "{{exam}}",
+									"type": "default"
+								},
+								{
+									"key": "questionId",
+									"value": "{{id_question}}",
+									"type": "default"
+								},
+								{
+									"key": "questionNumber",
+									"value": "1",
+									"type": "default"
+								},
+								{
+									"key": "time",
+									"value": "25",
+									"type": "default"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{URL}}exam-next-question",
+							"host": [
+								"{{URL}}exam-next-question"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get question 2",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Check body\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData.question_number).to.eql(2);\r",
+									"    pm.expect(jsonData.primary_number).to.eql(2);\r",
+									"    pm.expect(jsonData.spec_number).to.eql(0);\r",
+									"    pm.expect(jsonData.answer_a).to.eql(\"\");\r",
+									"    pm.expect(jsonData.answer_b).to.eql(\"\");\r",
+									"    pm.expect(jsonData.answer_c).to.eql(\"\");\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{URL}}exam-get",
+							"host": [
+								"{{URL}}exam-get"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Cancel exam 2",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "X-CSRFToken",
+								"value": "{{token}}",
+								"type": "default"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "cancel",
+									"value": "True",
+									"type": "default"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{URL}}cancel-exam",
+							"host": [
+								"{{URL}}cancel-exam"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Check answer",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"pm.test(\"Check body\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData.answer).to.eql(\"T\");\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{URL}}exam-check-answers-get?id={{exam}}&question=1",
+							"host": [
+								"{{URL}}exam-check-answers-get"
+							],
+							"query": [
+								{
+									"key": "id",
+									"value": "{{exam}}"
+								},
+								{
+									"key": "question",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Charts",
+			"item": [
+				{
+					"name": "Login",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"const cookieJar = pm.cookies.jar();\r",
+									"cookieJar.get(pm.environment.get(\"URL\"), \"csrftoken\", (error, cookie)=> {\r",
+									"        if(error) console.log(error);\r",
+									"        else pm.collectionVariables.set(\"token\", cookie);})"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {
+							"user-agent": true,
+							"accept": true,
+							"accept-encoding": true,
+							"connection": true
+						}
+					},
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "X-CSRFToken",
+								"value": "{{token}}",
+								"type": "default"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "login",
+									"value": "{{login}}",
+									"type": "default"
+								},
+								{
+									"key": "password",
+									"value": "{{password}}",
+									"type": "default"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{URL}}login/",
+							"host": [
+								"{{URL}}login"
+							],
+							"path": [
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get pie chart",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Body content\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    var passed = jsonData.passed;\r",
+									"    var failed = jsonData.failed;\r",
+									"    if (passed == null){\r",
+									"        passed = 0\r",
+									"    }\r",
+									"    if (failed == null){\r",
+									"        failed = 0\r",
+									"    }\r",
+									"    pm.expect(jsonData.examCount).to.eql(passed + failed);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{URL}}pie-chart?category=W",
+							"host": [
+								"{{URL}}pie-chart"
+							],
+							"query": [
+								{
+									"key": "category",
+									"value": "W"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get graph chart",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{URL}}graph-chart?category=W",
+							"host": [
+								"{{URL}}graph-chart"
+							],
+							"query": [
+								{
+									"key": "category",
+									"value": "W"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Update options",
+			"item": [
+				{
+					"name": "Login",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"const cookieJar = pm.cookies.jar();\r",
+									"cookieJar.get(pm.environment.get(\"URL\"), \"csrftoken\", (error, cookie)=> {\r",
+									"        if(error) console.log(error);\r",
+									"        else pm.collectionVariables.set(\"token\", cookie);})"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {
+							"user-agent": true,
+							"accept": true,
+							"accept-encoding": true,
+							"connection": true
+						}
+					},
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "X-CSRFToken",
+								"value": "{{token}}",
+								"type": "default"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "login",
+									"value": "{{login}}",
+									"type": "default"
+								},
+								{
+									"key": "password",
+									"value": "{{password}}",
+									"type": "default"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{URL}}login/",
+							"host": [
+								"{{URL}}login"
+							],
+							"path": [
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Change options",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "X-CSRFToken",
+								"value": "{{token}}",
+								"type": "default"
+							}
+						],
+						"url": {
+							"raw": "{{URL}}update-options",
+							"host": [
+								"{{URL}}update-options"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Authentication",
+			"item": [
+				{
+					"name": "exam-next-question",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 401\", function () {\r",
+									"    pm.response.to.have.status(401);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"const cookieJar = pm.cookies.jar();\r",
+									"cookieJar.get(pm.environment.get(\"URL\"), \"csrftoken\", (error, cookie)=> {\r",
+									"        if(error) console.log(error);\r",
+									"        pm.collectionVariables.set(\"token\", cookie);\r",
+									"        cookieJar.unset(pm.environment.get(\"URL\"), \"sessionid\", (error)=> {\r",
+									"        if(error) console.log(error);});});\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "X-CSRFToken",
+								"value": "{{token}}",
+								"type": "default"
+							}
+						],
+						"url": {
+							"raw": "{{URL}}exam-next-question",
+							"host": [
+								"{{URL}}exam-next-question"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "check-active-exams",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Redirected to login page\", function () {\r",
+									"    const responseText = pm.response.text();\r",
+									"    const matches = responseText.match(\"<title>Logowanie</title>\");\r",
+									"    const redirected = matches[0];\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"const cookieJar = pm.cookies.jar();\r",
+									"cookieJar.get(pm.environment.get(\"URL\"), \"csrftoken\", (error, cookie)=> {\r",
+									"        if(error) console.log(error);\r",
+									"        pm.collectionVariables.set(\"token\", cookie);\r",
+									"        cookieJar.unset(pm.environment.get(\"URL\"), \"sessionid\", (error)=> {\r",
+									"        if(error) console.log(error);});});\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{URL}}check-active-exams",
+							"host": [
+								"{{URL}}check-active-exams"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "cancel-exam",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Redirected to login page\", function () {\r",
+									"    const responseText = pm.response.text();\r",
+									"    const matches = responseText.match(\"<title>Logowanie</title>\");\r",
+									"    const redirected = matches[0];\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"const cookieJar = pm.cookies.jar();\r",
+									"cookieJar.get(pm.environment.get(\"URL\"), \"csrftoken\", (error, cookie)=> {\r",
+									"        if(error) console.log(error);\r",
+									"        pm.collectionVariables.set(\"token\", cookie);\r",
+									"        cookieJar.unset(pm.environment.get(\"URL\"), \"sessionid\", (error)=> {\r",
+									"        if(error) console.log(error);});});\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "X-CSRFToken",
+								"value": "{{token}}",
+								"type": "default"
+							}
+						],
+						"url": {
+							"raw": "{{URL}}cancel-exam",
+							"host": [
+								"{{URL}}cancel-exam"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "generate-exam",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Redirected to login page\", function () {\r",
+									"    const responseText = pm.response.text();\r",
+									"    const matches = responseText.match(\"<title>Logowanie</title>\");\r",
+									"    const redirected = matches[0];\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"const cookieJar = pm.cookies.jar();\r",
+									"cookieJar.get(pm.environment.get(\"URL\"), \"csrftoken\", (error, cookie)=> {\r",
+									"        if(error) console.log(error);\r",
+									"        pm.collectionVariables.set(\"token\", cookie);\r",
+									"        cookieJar.unset(pm.environment.get(\"URL\"), \"sessionid\", (error)=> {\r",
+									"        if(error) console.log(error);});});\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "X-CSRFToken",
+								"value": "{{token}}",
+								"type": "default"
+							}
+						],
+						"url": {
+							"raw": "{{URL}}generate-exam",
+							"host": [
+								"{{URL}}generate-exam"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "exam-get",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 401\", function () {\r",
+									"    pm.response.to.have.status(401);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"const cookieJar = pm.cookies.jar();\r",
+									"cookieJar.get(pm.environment.get(\"URL\"), \"csrftoken\", (error, cookie)=> {\r",
+									"        if(error) console.log(error);\r",
+									"        pm.collectionVariables.set(\"token\", cookie);\r",
+									"        cookieJar.unset(pm.environment.get(\"URL\"), \"sessionid\", (error)=> {\r",
+									"        if(error) console.log(error);});});\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{URL}}exam-get",
+							"host": [
+								"{{URL}}exam-get"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "exam-check-answers-get",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 401\", function () {\r",
+									"    pm.response.to.have.status(401);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"const cookieJar = pm.cookies.jar();\r",
+									"cookieJar.get(pm.environment.get(\"URL\"), \"csrftoken\", (error, cookie)=> {\r",
+									"        if(error) console.log(error);\r",
+									"        pm.collectionVariables.set(\"token\", cookie);\r",
+									"        cookieJar.unset(pm.environment.get(\"URL\"), \"sessionid\", (error)=> {\r",
+									"        if(error) console.log(error);});});\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{URL}}exam-check-answers-get",
+							"host": [
+								"{{URL}}exam-check-answers-get"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "pie-chart",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 401\", function () {\r",
+									"    pm.response.to.have.status(401);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"const cookieJar = pm.cookies.jar();\r",
+									"cookieJar.get(pm.environment.get(\"URL\"), \"csrftoken\", (error, cookie)=> {\r",
+									"        if(error) console.log(error);\r",
+									"        pm.collectionVariables.set(\"token\", cookie);\r",
+									"        cookieJar.unset(pm.environment.get(\"URL\"), \"sessionid\", (error)=> {\r",
+									"        if(error) console.log(error);});});\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{URL}}pie-chart",
+							"host": [
+								"{{URL}}pie-chart"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "graph-chart",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 401\", function () {\r",
+									"    pm.response.to.have.status(401);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"const cookieJar = pm.cookies.jar();\r",
+									"cookieJar.get(pm.environment.get(\"URL\"), \"csrftoken\", (error, cookie)=> {\r",
+									"        if(error) console.log(error);\r",
+									"        pm.collectionVariables.set(\"token\", cookie);\r",
+									"        cookieJar.unset(pm.environment.get(\"URL\"), \"sessionid\", (error)=> {\r",
+									"        if(error) console.log(error);});});\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{URL}}graph-chart",
+							"host": [
+								"{{URL}}graph-chart"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update-options",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 401\", function () {\r",
+									"    pm.response.to.have.status(401);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"const cookieJar = pm.cookies.jar();\r",
+									"cookieJar.get(pm.environment.get(\"URL\"), \"csrftoken\", (error, cookie)=> {\r",
+									"        if(error) console.log(error);\r",
+									"        pm.collectionVariables.set(\"token\", cookie);\r",
+									"        cookieJar.unset(pm.environment.get(\"URL\"), \"sessionid\", (error)=> {\r",
+									"        if(error) console.log(error);});});\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "X-CSRFToken",
+								"value": "{{token}}",
+								"type": "default"
+							}
+						],
+						"url": {
+							"raw": "{{URL}}update-options",
+							"host": [
+								"{{URL}}update-options"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					"const cookieJar = pm.cookies.jar();",
+					"cookieJar.get(pm.environment.get(\"URL\"), \"csrftoken\", (error, cookie)=> {",
+					"        if(error) console.log(error);",
+					"        else pm.collectionVariables.set(\"token\", cookie);})"
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "exam",
+			"value": "",
+			"type": "default"
+		},
+		{
+			"key": "id_question",
+			"value": ""
+		},
+		{
+			"key": "token",
+			"value": ""
+		}
+	]
+}

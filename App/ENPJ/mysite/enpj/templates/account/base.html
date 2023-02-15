@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <link rel="stylesheet" type="text/css" href="/static/enpj/styles.css">
+    <title>{% block head_title %}{% endblock %}</title>
+    {% block extra_head %}
+    {% endblock %}
+  </head>
+  <body>
+    {% block body %}
+
+
+
+    <div>
+      <ul>
+        {% if user.is_authenticated %}
+        <li><a href="/">Powrót</a></li>
+        <li><a href="{% url 'account_logout' %}">Wyloguj</a></li>
+        {% else %}
+        <li><a href="{% url 'account_login' %}">Logowanie</a></li>
+        <li><a href="{% url 'account_signup' %}">Rejestracja</a></li>
+        {% endif %}
+      </ul>
+    </div>
+    {% block content %}
+    {% endblock %}
+    {% endblock %}
+    {% block extra_body %}
+    {% endblock %}
+  {% if messages %}
+    <div>
+        {% for message in messages %}
+      <b>{{message}}</b>
+        {% endfor %}
+    </div>
+    {% endif %}
+  </body>
+</html>

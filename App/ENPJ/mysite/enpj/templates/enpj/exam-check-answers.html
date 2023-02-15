@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<head>
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <link rel="stylesheet" type="text/css" href="/static/enpj/styles.css">
+    <script type="text/javascript">
+        var importCorrectAnswerList = {{ correct_answer_list }}
+        var importMedia = "{{ media }}"
+        var importAnswer = "{{ answer }}"
+        var importCorrectAnswer = "{{ correct_answer }}"
+        var importIdExam = {{ id_exam }}
+    </script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+    <title>Odpowiedzi z egzaminu</title>
+</head>
+<body>
+    <ul>
+        <li><a href="prepare-learning">Nauka</a></li>
+        <li style="background-color: grey;"><a href="/">Egzamin</a></li>
+        <li><a href="statistics">Statystyki</a></li>
+        <li><a href="options">Ustawienia</a></li>
+        <li><a href="logout">Wyloguj</a></li>
+    </ul>
+    <div id="main">
+        <div id="rightCheckAns">
+            <table id="rightTable">
+                <tr><td>Pytania podstawowe</button></td></tr>
+                <tr><td><button class="buttonCheckAns" id='q1' onClick="checkQuestions(1)">1</buttton><button class="buttonCheckAns" id='q2' onClick="checkQuestions(2)">2</buttton>
+                    <button class="buttonCheckAns" id='q3' onClick="checkQuestions(3)">3</buttton><button class="buttonCheckAns" id='q4' onClick="checkQuestions(4)">4</buttton>
+                    <button class="buttonCheckAns" id='q5' onClick="checkQuestions(5)">5</buttton><button class="buttonCheckAns" id='q6' onClick="checkQuestions(6)">6</buttton>
+                    <button class="buttonCheckAns" id='q7' onClick="checkQuestions(7)">7</buttton><button class="buttonCheckAns" id='q8' onClick="checkQuestions(8)">8</buttton>
+                    <button class="buttonCheckAns" id='q9' onClick="checkQuestions(9)">9</buttton><button class="buttonCheckAns" id='q10' onClick="checkQuestions(10)">10</buttton>
+                    <button class="buttonCheckAns" id='q11' onClick="checkQuestions(11)">11</buttton><button class="buttonCheckAns" id='q12' onClick="checkQuestions(12)">12</buttton>
+                    <button class="buttonCheckAns" id='q13' onClick="checkQuestions(13)">13</buttton><button class="buttonCheckAns" id='q14' onClick="checkQuestions(14)">14</buttton>
+                    <button class="buttonCheckAns" id='q15' onClick="checkQuestions(15)">15</buttton><button class="buttonCheckAns" id='q16' onClick="checkQuestions(16)">16</buttton>
+                    <button class="buttonCheckAns" id='q17' onClick="checkQuestions(17)">17</buttton><button class="buttonCheckAns" id='q18' onClick="checkQuestions(18)">18</buttton>
+                    <button class="buttonCheckAns" id='q19' onClick="checkQuestions(19)">19</buttton><button class="buttonCheckAns" id='q20' onClick="checkQuestions(20)">20</buttton</td></tr>
+                <tr><td>Pytania specjalistyczne</td></tr>
+                <tr><td><button class="buttonCheckAns" id='q21' onClick="checkQuestions(21)">1</buttton><button class="buttonCheckAns" id='q22' onClick="checkQuestions(22)">2</buttton>
+                    <button class="buttonCheckAns" id='q23' onClick="checkQuestions(23)">3</buttton><button class="buttonCheckAns" id='q24' onClick="checkQuestions(24)">4</buttton>
+                    <button class="buttonCheckAns" id='q25' onClick="checkQuestions(25)">5</buttton><button class="buttonCheckAns" id='q26' onClick="checkQuestions(26)">6</buttton>
+                    <button class="buttonCheckAns" id='q27' onClick="checkQuestions(27)">7</buttton><button class="buttonCheckAns" id='q28' onClick="checkQuestions(28)">8</buttton>
+                    <button class="buttonCheckAns" id='q29' onClick="checkQuestions(29)">9</buttton><button class="buttonCheckAns" id='q30' onClick="checkQuestions(30)">10</buttton>
+                    <button class="buttonCheckAns" id='q31' onClick="checkQuestions(31)">11</buttton><button class="buttonCheckAns" id='q32' onClick="checkQuestions(32)">12</buttton></td></tr>
+                <tr><td><button onclick="location.href='/';">Powrót</buttton></td></tr>
+            </table>
+        </div>
+        <div id="top">
+            <table>
+                <tr>
+                    <td class="topTdLabel"><label>Wartość punktowa</label></td>
+                    <td class="topTdSpan"><span class="topTdSpanBox" id="points">{{ points }}</span></td>
+                    <td class="topTdLabel"><label>Aktualna kategoria</label></td>
+                    <td class="topTdSpan"><span class="topTdSpanBox">{{ category }}</span></td>
+                </tr>
+            </table>
+        </div>
+        <div id="left">
+            <div id="media">
+                <video id="video" autoplay src="/static/enpj/media/{{ media }}"  type="video/mp4" muted="true" controls></video>
+                <img id="img" src="/static/enpj/media/{{ media }}">
+            </div>
+            <div id="question">{{ question }}</div>
+            <div id="answers">
+                <button id="button1">TAK</button><br>
+                <button id="button2">NIE</button><br>
+                <button id="button3" style="display:none;">
+            </div>
+        </div>
+    </div>
+</body>
+<script src="/static/enpj/examCheckAnswers.js"></script>

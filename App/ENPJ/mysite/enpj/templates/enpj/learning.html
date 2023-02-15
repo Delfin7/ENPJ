@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<head>
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <link rel="stylesheet" type="text/css" href="/static/enpj/styles.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+    <script>
+        var importType = "{{ type }}";
+        const importQuestionsArray = {{ questionsArray | safe }};
+        var importCategory = "{{ category }}";
+        var importModule = "{{ module }}";
+        var importCsrfToken = "{{ csrf_token }}";
+    </script>
+    <title>Nauka</title>
+</head>
+<body>
+    <ul>
+        <li style="background-color: grey;"><a href="prepare-learning">Nauka</a></li>
+        <li><a href="/">Egzamin</a></li>
+        <li><a href="statistics">Statystyki</a></li>
+        <li><a href="options">Ustawienia</a></li>
+        <li><a href="logout">Wyloguj</a></li>
+    </ul>
+    <div id="main">
+        <div id="left">
+            <div id="media">
+                <video id="video" autoplay src="/static/enpj/media/{{ media }}"  type="video/mp4" muted="true" controls></video>
+                <img id="img" src="/static/enpj/media/{{ media }}">
+            </div>
+            <div id="question">
+                {{ question }}
+            </div>
+            <div id="answers">
+                <div id="buttonT" class="button" onClick="take_answer('T')" style="display:none">TAK</div>
+                <div id="buttonN" class="button" onClick="take_answer('N')" style="display:none">NIE</div>
+                <div id="buttonA" class="button" onClick="take_answer('A')" style="display:none">{{ answer_a }}</div>
+                <div id="buttonB" class="button" onClick="take_answer('B')" style="display:none">{{ answer_b }}</div>
+                <div id="buttonC" class="button" onClick="take_answer('C')" style="display:none">{{ answer_c }}</div>
+            </div>
+        </div>
+        <div id="right">
+            <table id="rightTable">
+                <tr><td>Kategoria</td><td>{{ category }}</td></tr>
+                <tr><td>Numer pytania</td><td><label id="questionNumber">100</label> z <label id="questionsCount">100</label></td></tr>
+                <tr><td colspan="2">Wybór pytania</td></tr>
+                <tr><td><input type="number" style="width:80%" min="1" id="inputQuestionNumber"></td><td><button onClick="confirm()">Zatwierdź</button></td></tr>
+                <tr><td><button id="prev" onClick="prev()">Poprzednie</button></td><td><button onClick="next()" id="next">Następne</button></td></tr>
+                <tr><td colspan="2">Podstawa</td></tr>
+                <tr><td colspan="2"><label id="source"></label></td></tr>    
+            </table>
+        </div>
+    </div>
+</body>
+<script src="/static/enpj/learning.js"></script>

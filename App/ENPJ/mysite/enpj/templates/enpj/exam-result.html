@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<head>
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <link rel="stylesheet" type="text/css" href="/static/enpj/styles.css">
+    <title>Wynik z egzaminu</title>
+</head>
+<body>
+    <ul>
+        <li><a href="prepare-learning">Nauka</a></li>
+        <li style="background-color: grey;"><a href="/">Egzamin</a></li>
+        <li><a href="statistics">Statystyki</a></li>
+        <li><a href="options">Ustawienia</a></li>
+        <li><a href="logout">Wyloguj</a></li>
+    </ul>
+    <div id="main">
+        <h1>Zakończyłeś egzamin</h1>
+        <p>Kategoria {{ category }}</p>
+        <p>Uzyskałeś wynik {{ result }}, zdobywając {{ points }} na 74 punkty (wymagane: 68).</p>
+        <div id="options">
+            <button onclick="location.href='/';">Powrót</button>
+            <button onclick="location.href='exam-check-answers?id={{ exam }}';">Sprawdź odpowiedzi</button>
+        </div>
+    </div>
+</body>

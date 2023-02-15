@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<head>
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <link rel="stylesheet" type="text/css" href="/static/enpj/styles.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/chartjs-plugin-annotation/0.5.7/chartjs-plugin-annotation.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@0.7.0"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+    <script>
+        var importActualLanguage = "{{ language }}"
+        var importActualSignLanguage = {{ signLanguage }}
+        var importCsrfToken = "{{ csrf_token }}";
+    </script>
+    <title>Opcje</title>
+</head>
+<body>
+    <ul>
+        <li><a href="prepare-learning">Nauka</a></li>
+        <li><a href="/">Egzamin</a></li>
+        <li><a href="statistics">Statystyki</a></li>
+        <li style="background-color: grey;"><a href="options">Ustawienia</a></li>
+        <li><a href="logout">Wyloguj</a></li>
+    </ul>
+    <div id="main">
+        <table id="optionTable" class="tableBorder">
+            <tr class="tableBorder"><td class="tableBorder">Język egzaminu</td><td class="tableBorder"><select id="language">
+                <option id="PL" value="PL">Polski</option>
+                <option id="ENG" value="ENG">Angielski</option>
+                <option id="DE" value="DE">Niemiecki</option>
+            </select></td></tr>
+            <tr class="tableBorder"><td class="tableBorder">Tłumaczenie migowe (PJM)</td><td class="tableBorder"><center><input type="checkbox" id="signLanguage"></center></td></tr>
+            <tr><td colspan="2" class="tableBorder"><center><button onClick="save()">Zapisz</button></center></td></tr>
+            <tr><td colspan="2" class="tableBorder"><center><button onclick="location.href='password/change';">Zmiana hasła</button></center></td></tr>
+        </table>
+        <label id="info"><label>
+    </div>
+</body>
+<script src="/static/enpj/options.js"></script>

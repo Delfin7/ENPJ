@@ -1,0 +1,5 @@
+INSTRUCTION to get media:
+1. Go to https://www.gov.pl/web/infrastruktura/prawo-jazdy
+2. Download all(5) multimedia
+3. Convert videos format to mp4
+4. Take all to this folder

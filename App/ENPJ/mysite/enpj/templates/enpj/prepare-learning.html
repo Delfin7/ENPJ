@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<head>
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <link rel="stylesheet" type="text/css" href="/static/enpj/styles.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+    <script>
+        var importCsrfToken = "{{ csrf_token }}";
+    </script>
+    <title>Przygotowanie nauki</title>
+</head>
+<body>
+    <ul>
+        <li style="background-color: grey;"><a href="prepare-learning">Nauka</a></li>
+        <li><a href="/">Egzamin</a></li>
+        <li><a href="statistics">Statystyki</a></li>
+        <li><a href="options">Ustawienia</a></li>
+        <li><a href="logout">Wyloguj</a></li>
+    </ul>
+    <div id="main">
+        <div id="learnCategories">
+            <table>
+                <tr><td colspan="5"><center>Wybierz kategorię</center></td></tr>
+                <tr><td><button class="buttonExamCategory" onClick="chooseModule('A')">A</button></td><td><button class="buttonExamCategory" onClick="chooseModule('B')">B</button></td><td><button class="buttonExamCategory" onClick="chooseModule('C')">C</button></td><td><button class="buttonExamCategory" onClick="chooseModule('D')">D</button></td><td><button class="buttonExamCategory" onClick="chooseModule('T')">T</button></td></tr>
+                <tr><td><button class="buttonExamCategory" onClick="chooseModule('A1')">A1</button></td><td><button class="buttonExamCategory" onClick="chooseModule('B1')">B1</button></td><td><button class="buttonExamCategory" onClick="chooseModule('C1')">C1</button></td><td><button class="buttonExamCategory" onClick="chooseModule('D1')">D1</button></td><td><button class="buttonExamCategory" onClick="chooseModule('PT')">PT</button></td></tr>
+                <tr><td><button class="buttonExamCategory" onClick="chooseModule('A2')">A2</button></td></tr>
+                <tr><td><button class="buttonExamCategory" onClick="chooseModule('AM')">AM</button></td></tr>
+            </table>
+        </div>
+        <div id="learnModules">
+            <table>
+                <tr><td><button id="r1" class="buttonModule"></button></td></tr>
+                <tr><td><button id="r2" class="buttonModule"></button></td></tr>
+                <tr><td><button id="r3" class="buttonModule"></button></td></tr>
+                <tr><td><button id="r4" class="buttonModule"></button></td></tr>
+                <tr><td><button id="r5" class="buttonModule"></button></td></tr>
+                <tr><td><button id="r6" class="buttonModule"></button></td></tr>
+                <tr><td><button id="r7" class="buttonModule"></button></td></tr>
+                <tr><td><button id="r8" class="buttonModule"></button></td></tr>
+                <tr><td><button id="r9" class="buttonModule"></button></td></tr>
+                <tr><td><button id="r10" class="buttonModule"></button></td></tr>
+                <tr><td><button id="r11" class="buttonModule"></button></td></tr>
+                <tr><td><button id="r12" class="buttonModule"></button></td></tr>
+                <tr><td><button id="r13" class="buttonModule"></button></td></tr>
+                <tr><td><button id="r14" class="buttonModule"></button></td></tr>
+                <tr><td><button id="r15" class="buttonModule"></button></td></tr>
+                <tr><td><button id="r16" class="buttonModule"></button></td></tr>
+                <tr><td><button id="r17" class="buttonModule"></button></td></tr>
+                <tr><td><button id="r18" class="buttonModule"></button></td></tr>
+                <tr><td><button id="r19" class="buttonModule"></button></td></tr>
+                <tr><td><button id="r20" class="buttonModule"></button></td></tr>
+                <tr><td><button id="r21" class="buttonModule"></button></td></tr>
+                <tr><td><button id="r22" class="buttonModule"></button></td></tr>
+                <tr><td><button id="r23" class="buttonModule"></button></td></tr>
+                <tr><td><button id="r24" class="buttonModule"></button></td></tr>
+                <tr><td><button id="r25" class="buttonModule"></button></td></tr>
+                <tr><td><button id="r26" class="buttonModule"></button></td></tr>
+            </table>
+        </div>
+    </div>
+</body>
+<script src="/static/enpj/prepareLearning.js"></script>

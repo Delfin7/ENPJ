@@ -1,0 +1,3 @@
+The tests require you to create a test user and enter his data + server url:
+- Postman - environmental data
+- Selenium - test_data.py
